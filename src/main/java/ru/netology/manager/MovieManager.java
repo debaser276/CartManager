@@ -3,25 +3,26 @@ package ru.netology.manager;
 import ru.netology.domain.Movie;
 
 public class MovieManager {
-    Movie[] movies = new Movie[0];
+    MovieRepository repository;
     private int moviesToShow;
 
     public MovieManager() {}
 
-    public MovieManager(int moviesToShow) {
+    public MovieManager(MovieRepository repository) {
+        this.repository = repository;
+    }
+
+    public MovieManager(MovieRepository repository, int moviesToShow) {
+        this.repository = repository;
         this.moviesToShow = moviesToShow;
     }
 
     public void addMovie(Movie movie) {
-        int length = movies.length + 1;
-        Movie[] tmp = new Movie[length];
-        System.arraycopy(movies, 0, tmp, 0, movies.length);
-        int lastIndex = tmp.length - 1;
-        tmp[lastIndex] = movie;
-        movies = tmp;
+        repository.save(movie);
     }
 
     public Movie[] getLast() {
+        Movie[] movies = repository.findAll();
         Movie[] tmp;
         int length = Math.min(movies.length, 10);
         if (moviesToShow != 0) {
@@ -32,5 +33,17 @@ public class MovieManager {
             tmp[i] = movies[movies.length - i - 1];
         }
         return tmp;
+    }
+
+    public Movie findById(int id) {
+        return repository.findByID(id);
+    }
+
+    public void removeById(int id) {
+        repository.removeById(id);
+    }
+
+    public void removeAll() {
+        repository.removeAll();
     }
 }
