@@ -25,7 +25,7 @@ public class MovieManager {
         Movie[] movies = repository.findAll();
         Movie[] tmp;
         int length = Math.min(movies.length, 10);
-        if (moviesToShow != 0) {
+        if (moviesToShow != 0 && moviesToShow < length) {
             length = moviesToShow;
         }
         tmp = new Movie[length];

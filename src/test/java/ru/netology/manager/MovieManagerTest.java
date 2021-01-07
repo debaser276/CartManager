@@ -92,4 +92,17 @@ class MovieManagerTest {
         Movie[] expected = new Movie[]{movies[0]};
         assertArrayEquals(expected, actual);
     }
+
+    @Test
+    public void shouldReturnLastCustomIfMoviesLessThanMoviesToShow() {
+        MovieManager manager = new MovieManager(repository, 5);
+        manager.addMovie(movies[0]);
+        manager.addMovie(movies[1]);
+        manager.addMovie(movies[2]);
+        Movie[] expected = new Movie[]{movies[2], movies[1], movies[0]};
+        Movie[] returned = new Movie[]{movies[0], movies[1], movies[2]};
+        doReturn(returned).when(repository).findAll();
+        Movie[] actual = manager.getLast();
+        assertArrayEquals(expected, actual);
+    }
 }
